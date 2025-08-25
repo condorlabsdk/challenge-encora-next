@@ -40,6 +40,15 @@ body {
   align-items: center;
   padding-bottom: 50px;
   color: white;
+  overflow: auto;
+}
+
+.chat-selected {
+  height: 70vh;
+  overflow: auto;
+  margin-bottom: 30px;
+  min-width: 520px;
+  max-width: 708px;
 }
 
 .buscador {

@@ -1,5 +1,4 @@
 "use client"
-import VisitingCard from "@/common/component/visitingCard";
 import { useEffect, useState } from "react";
 
 type UserType = {
@@ -35,7 +34,7 @@ export default function Home() {
 
   const createUser = async()=>{
     const data = {
-      id: "5",
+      id: `conv-00` + (chats?.length + 1),
       name: inputSearch,
       messages: [
         {
@@ -62,7 +61,15 @@ export default function Home() {
   }
 
   const updateUser = async()=> {
+    setInputConversation('')
+    console.log(chatSelected, inputConversation)
+
+    const newMessage = [
+      { role: 'user', content: inputConversation },
+      { role: 'encoraChat', content: 'This is a simulated response from EncoraChat.' }
+    ];
     
+    chatSelected.messages = [...chatSelected.messages, ...newMessage];
   }
 
   const getData = async()=>{
@@ -84,9 +91,18 @@ export default function Home() {
   }, [])
 
   const changeChat = (chat: ChatType) => {
-    console.log(chats)
+    console.log(chats, chat)
     setChatSelected(chat)
     setActiveChat(true);
+  }
+
+  const deleteChat = (chat: ChatType) => {
+    const filteredChats = chats?.filter((c: ChatType) => c.id !== chat.id);
+    setChats(filteredChats);
+    if (chatSelected?.id === chat.id) {
+      setActiveChat(false);
+      setChatSelected(null);
+    }
   }
 
   const newChat = () => {
@@ -103,11 +119,32 @@ export default function Home() {
   const handleConversation = (e: any) => {
     if (e.key == 'Enter') {
       updateUser();
+      let history = document.getElementById('chatSelected')
+      let interval: any = null;   
+      interval = setInterval(function() {
+        history.scrollTop = history.scrollHeight
+        clearInterval(interval)
+      }, 1)
+      
+    }
+  }
+
+  const handleInputSearchHistory = (e: any) => {
+    console.log(chats)
+    if (e.target.value === '') {
+      setChats(chats)
+    } else {
+      const searchTerm = e.target.value.toLowerCase();
+      const newChats: [] = chats;
+      const filteredChats = newChats.filter((chat: ChatType) =>
+        chat.name.toLowerCase().includes(searchTerm)
+      );
+      setChats(filteredChats);
     }
   }
 
   return (
-    <div className="font-sans flex justify-items-center min-h-screen">
+    <div className="font-sans flex justify-items-center h-screen">
       <section className="left p-4">
         <div className="logo">
           <h2 className="pb-30">EncoraChat</h2>
@@ -115,18 +152,28 @@ export default function Home() {
           <h3 
             className="pb-10 cursor-pointer"
             onClick={newChat}
-          >Nuevo Chat</h3>
+          >
+            Nuevo Chat
+          </h3>
 
           <p className="pb-5">Chats</p>
           <ul>
             {chats?.map((chat: ChatType, index: number) => (
-              <li key={index}>
+              <li key={index} className="flex justify-between">
                 <a onClick={() => changeChat(chat)} className="cursor-pointer">
                   {chat.name}
                 </a>
+                <div onClick={() => deleteChat(chat)}>x</div>
               </li>
             ))}
           </ul>
+
+          <input 
+            type="text" 
+            placeholder="Buscar en historial" 
+            className="rounded-xl mt-20 w-80 p-2 border"
+            onChange={handleInputSearchHistory}
+          />
         </div>
       </section>
 
@@ -150,14 +197,14 @@ export default function Home() {
             ) : (
               <>
                 <p className="mb-15">{chatSelected?.name}</p>
-                <ul className="text-left">
+                <ul id="chatSelected" className="text-left chat-selected">
                   {chatSelected?.messages?.map((men: any, index: number) => (
                     <li key={index} className="mb-5">
                       {men.content}
                     </li>
                   ))}
                 </ul>
-                <div className="buscador mb-20 ">
+                <div className="buscador mb-20 fixed bottom-0">
                   <input 
                     className="flex justify-center items-center border rounded-xl mt-4 w-100 p-2"
                     placeholder="Escribe algo"

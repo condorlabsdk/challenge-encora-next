@@ -16,7 +16,7 @@ export const handlers = [
           "name": "Python",
           "messages": [
             { "role": "user", "content": "Learn Python online" },
-            { "role": "assistant", "content": "routemap de python para que seas un pro en 1 semana" }
+            { "role": "encoraChat", "content": "routemap de python para que seas un pro en 1 semana" }
           ]
         },
         {
@@ -24,7 +24,7 @@ export const handlers = [
           "name": "React",
           "messages": [
             { "role": "user", "content": "¿Cuánto cuesta el tour de Nyhavn?" },
-            { "role": "assistant", "content": "El precio es de 200 DKK por persona; niños gratis." }
+            { "role": "encoraChat", "content": "El precio es de 200 DKK por persona; niños gratis." }
           ]
         }
       ],
