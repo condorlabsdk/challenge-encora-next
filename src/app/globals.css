@@ -55,5 +55,6 @@ body {
   border-radius: 20px;
   input {
     padding-left: 20px;
+    background: red;
   }
 }

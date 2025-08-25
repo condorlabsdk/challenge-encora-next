@@ -59,7 +59,6 @@
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
     --radius-xl: .75rem;
-    --radius-2xl: 1rem;
     --default-font-family: var(--font-geist-sans);
     --default-mono-font-family: var(--font-geist-mono);
   }
@@ -453,16 +452,8 @@
     margin-top: calc(var(--spacing) * 4);
   }
 
-  .mt-10 {
-    margin-top: calc(var(--spacing) * 10);
-  }
-
   .mt-20 {
     margin-top: calc(var(--spacing) * 20);
-  }
-
-  .mt-40 {
-    margin-top: calc(var(--spacing) * 40);
   }
 
   .mb-5 {
@@ -493,16 +484,8 @@
     width: calc(var(--spacing) * 16);
   }
 
-  .w-70 {
-    width: calc(var(--spacing) * 70);
-  }
-
   .w-80 {
     width: calc(var(--spacing) * 80);
-  }
-
-  .w-90 {
-    width: calc(var(--spacing) * 90);
   }
 
   .w-100 {
@@ -523,10 +506,6 @@
 
   .items-start {
     align-items: flex-start;
-  }
-
-  .justify-around {
-    justify-content: space-around;
   }
 
   .justify-between {
@@ -555,21 +534,12 @@
     margin-bottom: calc(calc(var(--spacing) * 1) * calc(1 - var(--tw-space-y-reverse)));
   }
 
-  .rounded {
-    border-radius: .25rem;
-  }
-
   .rounded-full {
     border-radius: 3.40282e38px;
   }
 
   .rounded-xl {
     border-radius: var(--radius-xl);
-  }
-
-  .rounded-r-2xl {
-    border-top-right-radius: var(--radius-2xl);
-    border-bottom-right-radius: var(--radius-2xl);
   }
 
   .border {
@@ -713,6 +683,7 @@ body {
 }
 
 .buscador input {
+  background: red;
   padding-left: 20px;
 }
 
