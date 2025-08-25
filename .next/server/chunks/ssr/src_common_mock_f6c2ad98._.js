@@ -47,19 +47,6 @@ const handlers = [
                 }
             ]
         });
-    }),
-    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$msw$2f$lib$2f$core$2f$http$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["http"].get(`/api/whoami`, ()=>{
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$msw$2f$lib$2f$core$2f$HttpResponse$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["HttpResponse"].json({
-            status: 200,
-            data: {
-                name: 'Jane Doe',
-                email: 'JaneDoe@example.com',
-                telephone: '1234567890',
-                work: 'XYZ tech',
-                location: 'New York',
-                image: 'https://randomuser.me/api/portraits/women/79.jpg'
-            }
-        });
     })
 ];
 }),

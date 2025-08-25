@@ -15,32 +15,22 @@ var _s = __turbopack_context__.k.signature();
 "use client";
 ;
 function Home() {
+    var _chatSelected_messages;
     _s();
-    const [user, setUser] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
-    const [chats, setChats] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [chats, setChats] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [activeChat, setActiveChat] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [chatSelected, setChatSelected] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
-    const [inputSearch, setInputSearch] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
-    const [inputConversation, setInputConversation] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
-    const getData = async ()=>{
-        const res = await fetch("/api/whoami");
-        const data = await res.json();
-        setUser(data.data);
+    const [inputSearch, setInputSearch] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');
+    const [inputConversation, setInputConversation] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const handleInputSearch = (event)=>{
+        setInputSearch(event.target.value);
     };
-    const getDataList = async ()=>{
-        const res = await fetch("/chats");
-        const data = await res.json();
-        setChats(data.data);
+    const handleInputConversation = (event)=>{
+        setInputConversation(event.target.value);
     };
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "Home.useEffect": ()=>{
-            getData();
-            getDataList();
-        }
-    }["Home.useEffect"], []);
     const createUser = async ()=>{
         const data = {
-            id: "conv-00".concat(chats.length + 1),
+            id: "conv-00" + ((chats === null || chats === void 0 ? void 0 : chats.length) + 1),
             name: inputSearch,
             messages: [
                 {
@@ -49,7 +39,7 @@ function Home() {
                 },
                 {
                     role: "encoraChat",
-                    content: "I have a routemap with 3 weeks for your learn Blockchain from zero."
+                    content: "I have a routemap with 3 weeks for your lean Blockchain from zero."
                 }
             ]
         };
@@ -58,18 +48,20 @@ function Home() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data)
+            body: ("TURBOPACK compile-time truthy", 1) ? JSON.stringify(data) : "TURBOPACK unreachable"
         });
-        await response.json();
+        const result = await response.json();
         setChats([
             ...chats,
             data
         ]);
         setActiveChat(true);
         setChatSelected(data);
+        console.log('user created', data, result);
     };
-    const updateUser = ()=>{
-        if (!chatSelected) return;
+    const updateUser = async ()=>{
+        setInputConversation('');
+        console.log(chatSelected, inputConversation);
         const newMessage = [
             {
                 role: 'user',
@@ -80,21 +72,29 @@ function Home() {
                 content: 'This is a simulated response from EncoraChat.'
             }
         ];
-        setChatSelected({
-            ...chatSelected,
-            messages: [
-                ...chatSelected.messages,
-                ...newMessage
-            ]
-        });
-        setInputConversation("");
+        chatSelected.messages = [
+            ...chatSelected.messages,
+            ...newMessage
+        ];
     };
+    const getDataList = async ()=>{
+        const res = await fetch("/chats");
+        const data = await res.json();
+        setChats(data.data);
+        console.log(data.data);
+    };
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "Home.useEffect": ()=>{
+            getDataList();
+        }
+    }["Home.useEffect"], []);
     const changeChat = (chat)=>{
+        console.log(chats, chat);
         setChatSelected(chat);
         setActiveChat(true);
     };
     const deleteChat = (chat)=>{
-        const filteredChats = chats.filter((c)=>c.id !== chat.id);
+        const filteredChats = chats === null || chats === void 0 ? void 0 : chats.filter((c)=>c.id !== chat.id);
         setChats(filteredChats);
         if ((chatSelected === null || chatSelected === void 0 ? void 0 : chatSelected.id) === chat.id) {
             setActiveChat(false);
@@ -103,58 +103,220 @@ function Home() {
     };
     const newChat = ()=>{
         setActiveChat(false);
-        setInputSearch("");
+        setInputSearch('');
     };
     const handleSearch = (e)=>{
-        if (e.key === 'Enter') createUser();
+        if (e.key == 'Enter') {
+            createUser();
+        }
     };
     const handleConversation = (e)=>{
-        if (e.key === 'Enter') updateUser();
+        if (e.key == 'Enter') {
+            updateUser();
+            let history = document.getElementById('chatSelected');
+            let interval = null;
+            interval = setInterval(function() {
+                history.scrollTop = history.scrollHeight;
+                clearInterval(interval);
+            }, 1);
+        }
     };
     const handleInputSearchHistory = (e)=>{
-        const value = e.target.value.toLowerCase();
-        if (!value) {
-            getDataList();
+        console.log(chats);
+        if (e.target.value === '') {
+            setChats(chats);
         } else {
-            setChats(chats.filter((chat)=>chat.name.toLowerCase().includes(value)));
+            const searchTerm = e.target.value.toLowerCase();
+            const newChats = chats;
+            const filteredChats = newChats.filter((chat)=>chat.name.toLowerCase().includes(searchTerm));
+            setChats(filteredChats);
         }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "font-sans flex justify-items-center h-screen",
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ChatList, {
-                chats: chats,
-                onChatSelect: changeChat,
-                onChatDelete: deleteChat,
-                onSearch: handleInputSearchHistory,
-                onNewChat: newChat
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
+                className: "left p-4",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "logo",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                            className: "pb-30",
+                            children: "EncoraChat"
+                        }, void 0, false, {
+                            fileName: "[project]/src/app/page.tsx",
+                            lineNumber: 144,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                            className: "pb-10 cursor-pointer",
+                            onClick: newChat,
+                            children: "Nuevo Chat"
+                        }, void 0, false, {
+                            fileName: "[project]/src/app/page.tsx",
+                            lineNumber: 146,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                            className: "pb-5",
+                            children: "Chats"
+                        }, void 0, false, {
+                            fileName: "[project]/src/app/page.tsx",
+                            lineNumber: 153,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
+                            children: chats === null || chats === void 0 ? void 0 : chats.map((chat, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                    className: "flex justify-between",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                            onClick: ()=>changeChat(chat),
+                                            className: "cursor-pointer",
+                                            children: chat.name
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/page.tsx",
+                                            lineNumber: 157,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            onClick: ()=>deleteChat(chat),
+                                            children: "x"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/page.tsx",
+                                            lineNumber: 160,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, index, true, {
+                                    fileName: "[project]/src/app/page.tsx",
+                                    lineNumber: 156,
+                                    columnNumber: 15
+                                }, this))
+                        }, void 0, false, {
+                            fileName: "[project]/src/app/page.tsx",
+                            lineNumber: 154,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                            type: "text",
+                            placeholder: "Buscar en historial",
+                            className: "rounded-xl mt-20 w-80 p-2 border",
+                            onChange: handleInputSearchHistory
+                        }, void 0, false, {
+                            fileName: "[project]/src/app/page.tsx",
+                            lineNumber: 165,
+                            columnNumber: 11
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/src/app/page.tsx",
+                    lineNumber: 143,
+                    columnNumber: 9
+                }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/page.tsx",
-                lineNumber: 105,
+                lineNumber: 142,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ChatWindow, {
-                activeChat: activeChat,
-                chatSelected: chatSelected,
-                inputSearch: inputSearch,
-                inputConversation: inputConversation,
-                onSearchChange: (e)=>setInputSearch(e.target.value),
-                onConversationChange: (e)=>setInputConversation(e.target.value),
-                onSearchKeyDown: handleSearch,
-                onConversationKeyDown: handleConversation
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
+                className: "right p-4",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "chat text-center",
+                    children: !activeChat ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+                                className: "text-xl",
+                                children: "¿Qué tienes en mente hoy?"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/page.tsx",
+                                lineNumber: 179,
+                                columnNumber: 17
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "buscador mb-20 ",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                    className: "flex justify-center items-center border rounded-xl mt-4 w-100 p-2",
+                                    placeholder: "Escribe algo",
+                                    type: "text",
+                                    onKeyDown: handleSearch,
+                                    onChange: handleInputSearch,
+                                    value: inputSearch
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/page.tsx",
+                                    lineNumber: 181,
+                                    columnNumber: 19
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/page.tsx",
+                                lineNumber: 180,
+                                columnNumber: 17
+                            }, this)
+                        ]
+                    }, void 0, true) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "mb-15",
+                                children: chatSelected === null || chatSelected === void 0 ? void 0 : chatSelected.name
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/page.tsx",
+                                lineNumber: 193,
+                                columnNumber: 17
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
+                                id: "chatSelected",
+                                className: "text-left chat-selected",
+                                children: chatSelected === null || chatSelected === void 0 ? void 0 : (_chatSelected_messages = chatSelected.messages) === null || _chatSelected_messages === void 0 ? void 0 : _chatSelected_messages.map((men, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                        className: "mb-5",
+                                        children: men.content
+                                    }, index, false, {
+                                        fileName: "[project]/src/app/page.tsx",
+                                        lineNumber: 196,
+                                        columnNumber: 21
+                                    }, this))
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/page.tsx",
+                                lineNumber: 194,
+                                columnNumber: 17
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "buscador mb-20 fixed bottom-0",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                    className: "flex justify-center items-center border rounded-xl mt-4 w-100 p-2",
+                                    placeholder: "Escribe algo",
+                                    type: "text",
+                                    onKeyDown: handleConversation,
+                                    onChange: handleInputConversation,
+                                    value: inputConversation
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/page.tsx",
+                                    lineNumber: 202,
+                                    columnNumber: 19
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/page.tsx",
+                                lineNumber: 201,
+                                columnNumber: 17
+                            }, this)
+                        ]
+                    }, void 0, true)
+                }, void 0, false, {
+                    fileName: "[project]/src/app/page.tsx",
+                    lineNumber: 175,
+                    columnNumber: 9
+                }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/page.tsx",
-                lineNumber: 112,
+                lineNumber: 174,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/page.tsx",
-        lineNumber: 104,
+        lineNumber: 140,
         columnNumber: 5
     }, this);
 }
-_s(Home, "1sNcfSQdYrlyt7KL3oIpvj8WjV8=");
+_s(Home, "HiD1BroSJ6/l+4C0XEfiQeAOTdk=");
 _c = Home;
 var _c;
 __turbopack_context__.k.register(_c, "Home");
