@@ -5,18 +5,11 @@ import { ChatType } from "@/common/types/chat";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [user, setUser] = useState<UserType | null>(null);
   const [chats, setChats] = useState<ChatType[]>([]);
   const [activeChat, setActiveChat] = useState<boolean>(false);
   const [chatSelected, setChatSelected] = useState<ChatType | null>(null);
   const [inputSearch, setInputSearch] = useState<string>("");
   const [inputConversation, setInputConversation] = useState<string>("");
-
-  const getData = async () => {
-    const res = await fetch("/api/whoami");
-    const data = await res.json();
-    setUser(data.data);
-  };
 
   const getDataList = async () => {
     const res = await fetch("/chats");
@@ -25,7 +18,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    getData();
     getDataList();  
   }, []);
 

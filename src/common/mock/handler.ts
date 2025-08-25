@@ -30,19 +30,4 @@ export const handlers = [
       ],
      })
   }),
-
-  http.get(`/api/whoami`, () => {
-    return HttpResponse.json({
-      status: 200,
-      data: {
-        name: 'Jane Doe',
-        email: 'JaneDoe@example.com',
-        telephone: '1234567890',
-        work: 'XYZ tech',
-        location: 'New York',
-        image: 'https://randomuser.me/api/portraits/women/79.jpg',
-
-      },
-    });
-  }),
 ]
